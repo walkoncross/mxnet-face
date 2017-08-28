@@ -70,10 +70,15 @@ def main():
     toc = time.time()
 
     print "time cost is:{}s".format(toc-tic)
+    dets[:, 0:4] /= scale
     for i in range(dets.shape[0]):
         bbox = dets[i, :4]
-        cv2.rectangle(color, (int(round(bbox[0]/scale)), int(round(bbox[1]/scale))),
-                      (int(round(bbox[2]/scale)), int(round(bbox[3]/scale))),  (0, 255, 0), 2)
+        print 'bbox:', bbox
+        print 'score:', dets[i, -1]
+#        cv2.rectangle(color, (int(round(bbox[0]/scale)), int(round(bbox[1]/scale))),
+#                      (int(round(bbox[2]/scale)), int(round(bbox[3]/scale))),  (0, 255, 0), 2)
+        cv2.rectangle(color, (int(round(bbox[0])), int(round(bbox[1]))),
+                      (int(round(bbox[2])), int(round(bbox[3]))),  (0, 255, 0), 2)
     cv2.imwrite("result.jpg", color)
 
 if __name__ == "__main__":
