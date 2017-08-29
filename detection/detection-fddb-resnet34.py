@@ -39,6 +39,7 @@ def main():
     file = open("fddb_result-resnet34-zyf.txt",'w')
     all_lines = fp.readlines()
     count = 0
+    time_ttl = 0.0
 
     ctx = mx.gpu(args.gpu)
     _, arg_params, aux_params = mx.model.load_checkpoint(args.prefix, args.epoch)
@@ -82,6 +83,11 @@ def main():
         toc = time.time()
         print "time cost is:{}s".format(toc-tic)
 
+        time_ttl += toc - tic
+
+        print "--->Processed %d images, Avg time cost is:{}s".format(count, time_ttl / count)
+
+
         #print dets
         #print line[35:-5]
         file.write('{}\n'.format(line[35:-5]))
@@ -97,6 +103,9 @@ def main():
         file.flush()
 
     file.close()
+
+    print "===>Totally processed %d images, Avg time cost is:{}s".format(count, time_ttl / count)
+
         #for i in range(dets.shape[0]):
         #    bbox = dets[i, :4]
         #    cv2.rectangle(color, (int(round(bbox[0]/scale)), int(round(bbox[1]/scale))),
